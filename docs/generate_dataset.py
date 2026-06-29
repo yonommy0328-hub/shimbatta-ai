@@ -140,7 +140,12 @@ def generate_jsonl_dataset(parsed_pairs, output_path):
                 f"  * **{tx_name} (독초):** {tx_sensory}\n\n"
                 f"💡 **안전 요령:** 마늘 냄새가 나지 않거나 잎에 깊은 주름이 있다면 절대 채취해서는 안 됩니다!"
             )
-            dataset.append({"instruction": prompt_1, "output": response_1})
+            dataset.append({
+                "conversations": [
+                    {"role": "user", "content": prompt_1},
+                    {"role": "assistant", "content": response_1}
+                ]
+            })
 
             # ----------------------------------------------------
             # 패턴 2: 직접 비교 질문형 (약초 vs 독초 구분법)
@@ -162,7 +167,12 @@ def generate_jsonl_dataset(parsed_pairs, output_path):
                 f"{tx_poison}\n\n"
                 f"💡 확실하게 구분이 안 되는 것은 절대 뜯지도 먹지도 마세요!"
             )
-            dataset.append({"instruction": prompt_2, "output": response_2})
+            dataset.append({
+                "conversations": [
+                    {"role": "user", "content": prompt_2},
+                    {"role": "assistant", "content": response_2}
+                ]
+            })
 
             # ----------------------------------------------------
             # 패턴 3: 독성 부작용 및 증상 상세 질문형
@@ -180,7 +190,12 @@ def generate_jsonl_dataset(parsed_pairs, output_path):
                 f"- 의식이 있는 경우 즉시 목 안쪽을 자극해 구토를 유도하여 독소가 몸에 흡수되는 양을 줄여야 합니다.\n"
                 f"- **[가장 중요]** 환자가 먹고 남은 식물의 잔여물을 비닐봉지에 밀봉하여 반드시 병원 응급실로 같이 가져가야 해독 요령 및 정밀 진단을 빠르게 받을 수 있습니다."
             )
-            dataset.append({"instruction": prompt_3, "output": response_3})
+            dataset.append({
+                "conversations": [
+                    {"role": "user", "content": prompt_3},
+                    {"role": "assistant", "content": response_3}
+                ]
+            })
 
     # 공통 응급 처치 및 자생 환경 지식 패턴 추가
     prompt_common = "산에서 독초를 잘못 뜯어 먹었을 때 어떻게 대처해야 하나요? 응급 처치 요령을 알려주세요."
@@ -196,7 +211,12 @@ def generate_jsonl_dataset(parsed_pairs, output_path):
         "### 3. 즉시 119 신고 및 병원 이송\n"
         "- 자가 치료를 하려 하지 말고, 민간요법을 맹신하지 마시고 즉각 병원 응급실로 환자를 이송해 수액 치료 및 전문 처방을 받아야 장기 손상을 막을 수 있습니다."
     )
-    dataset.append({"instruction": prompt_common, "output": response_common})
+    dataset.append({
+        "conversations": [
+            {"role": "user", "content": prompt_common},
+            {"role": "assistant", "content": response_common}
+        ]
+    })
 
     # JSONL 파일 쓰기
     with open(output_path, 'w', encoding='utf-8') as f:
